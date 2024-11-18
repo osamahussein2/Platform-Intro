@@ -7,10 +7,16 @@ public class PlayerController : MonoBehaviour
         left, right
     }
 
+    FacingDirection facingDirection;
+    public float playerSpeed = 5.0f;
+
+    private new Rigidbody2D rigidbody;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        facingDirection = new FacingDirection();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -25,7 +31,23 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        playerInput = Vector2.zero;
 
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            playerInput = new Vector2(-1.0f, 0.0f);
+
+            facingDirection = FacingDirection.left;
+        }
+
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            playerInput = new Vector2(1.0f, 0.0f);
+
+            facingDirection = FacingDirection.right;
+        }
+
+        rigidbody.position += playerSpeed * Time.deltaTime * playerInput;
     }
 
     public bool IsWalking()
