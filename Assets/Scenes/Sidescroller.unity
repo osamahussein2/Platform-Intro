@@ -1694,7 +1694,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 5
-  isPlayerWalking: 0
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0

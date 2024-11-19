@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     FacingDirection facingDirection;
     public float playerSpeed = 5.0f;
     bool isPlayerWalking = false;
+    bool isPlayerGrounded = false;
 
     private new Rigidbody2D rigidbody;
 
@@ -69,11 +70,35 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return false;
+        return isPlayerGrounded;
     }
 
     public FacingDirection GetFacingDirection()
     {
         return facingDirection;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "GroundTilemap")
+        {
+            isPlayerGrounded = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "GroundTilemap")
+        {
+            isPlayerGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "GroundTilemap")
+        {
+            isPlayerGrounded = false;
+        }
     }
 }
