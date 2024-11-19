@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     FacingDirection facingDirection;
     public float playerSpeed = 5.0f;
+    bool isPlayerWalking = false;
 
     private new Rigidbody2D rigidbody;
 
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
             playerInput = new Vector2(-1.0f, 0.0f);
 
             facingDirection = FacingDirection.left;
+
+            isPlayerWalking = true;
         }
 
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
@@ -45,6 +48,16 @@ public class PlayerController : MonoBehaviour
             playerInput = new Vector2(1.0f, 0.0f);
 
             facingDirection = FacingDirection.right;
+
+            isPlayerWalking = true;
+        }
+
+        else if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftArrow) &&
+            !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.RightArrow))
+        {
+            playerInput = Vector2.zero;
+
+            isPlayerWalking = false;
         }
 
         rigidbody.position += playerSpeed * Time.deltaTime * playerInput;
@@ -52,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsWalking()
     {
-        return false;
+        return isPlayerWalking;
     }
     public bool IsGrounded()
     {
@@ -61,6 +74,6 @@ public class PlayerController : MonoBehaviour
 
     public FacingDirection GetFacingDirection()
     {
-        return FacingDirection.left;
+        return facingDirection;
     }
 }
