@@ -14,11 +14,20 @@ public class PlayerController : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
 
+    public float apexHeight;
+    public float apexTime;
+
+    private float gravity;
+    private float jumpVelocity;
+
     // Start is called before the first frame update
     void Start()
     {
         facingDirection = new FacingDirection();
         rigidbody = GetComponent<Rigidbody2D>();
+
+        gravity = 0.0f;
+        jumpVelocity = 0.0f;
     }
 
     // Update is called once per frame
@@ -61,7 +70,25 @@ public class PlayerController : MonoBehaviour
             isPlayerWalking = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && isPlayerGrounded)
+        {
+            gravity = -2.0f * apexHeight / Mathf.Pow(apexTime, 2);
+            jumpVelocity = 2.0f * apexHeight / apexTime * Time.deltaTime;
+        }
+
+        if (rigidbody.velocity.y >= apexHeight && !isPlayerGrounded)
+        {
+            gravity = -2.0f * apexHeight / Mathf.Pow(apexTime, 2);
+            jumpVelocity = -2.0f * apexHeight / apexTime * Time.deltaTime;
+        }
+
+        if (rigidbody.velocity.y <= 0.0f && isPlayerGrounded)
+        {
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0.0f);
+        }
+
         rigidbody.position += playerSpeed * Time.deltaTime * playerInput;
+        rigidbody.velocity += new Vector2(0.0f, gravity * Time.deltaTime + jumpVelocity);
     }
 
     public bool IsWalking()
