@@ -72,14 +72,14 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isPlayerGrounded)
         {
-            gravity = -2.0f * apexHeight / Mathf.Pow(apexTime, 2);
+            gravity = 1.0f;
             jumpVelocity = 2.0f * apexHeight / apexTime * Time.deltaTime;
         }
 
         if (rigidbody.velocity.y >= apexHeight && !isPlayerGrounded)
         {
             gravity = -2.0f * apexHeight / Mathf.Pow(apexTime, 2);
-            jumpVelocity = -2.0f * apexHeight / apexTime * Time.deltaTime;
+            jumpVelocity = 0.0f;
         }
 
         if (rigidbody.velocity.y <= 0.0f && isPlayerGrounded)
