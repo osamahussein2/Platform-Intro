@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
     public float apexHeight;
     public float apexTime;
 
+    public float terminalSpeed = 2.5f;
+    public float fallVelocity;
+
+    private float fallingTime;
+
     private float gravity;
     private float jumpVelocity;
 
@@ -28,6 +33,10 @@ public class PlayerController : MonoBehaviour
 
         gravity = 0.0f;
         jumpVelocity = 0.0f;
+
+        fallingTime = 0.0f;
+
+        fallVelocity = 0.0f;
     }
 
     // Update is called once per frame
@@ -85,10 +94,31 @@ public class PlayerController : MonoBehaviour
         if (rigidbody.velocity.y <= 0.0f && isPlayerGrounded)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0.0f);
+            fallVelocity = 1.0f;
+        }
+
+        else if (rigidbody.velocity.y <= 0.0f && !isPlayerGrounded)
+        {
+            fallVelocity += Time.deltaTime;
+        }
+
+        if (rigidbody.velocity.y > 0.0f && !isPlayerGrounded)
+        {
+            fallVelocity = 1.0f;
+        }
+
+        if (fallVelocity > terminalSpeed)
+        {
+            fallVelocity = terminalSpeed;
+        }
+
+        else if (fallVelocity <= 1.0f)
+        {
+            fallVelocity = 1.0f;
         }
 
         rigidbody.position += playerSpeed * Time.deltaTime * playerInput;
-        rigidbody.velocity += new Vector2(0.0f, gravity * Time.deltaTime + jumpVelocity);
+        rigidbody.velocity += new Vector2(0.0f, gravity * fallVelocity * Time.deltaTime + jumpVelocity);
     }
 
     public bool IsWalking()
