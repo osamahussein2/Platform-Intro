@@ -20,10 +20,13 @@ public class PlayerController : MonoBehaviour
     public float terminalSpeed = 2.5f;
     public float fallVelocity;
 
-    private float fallingTime;
+    public float coyoteTime = 1.0f;
+    private float timer;
 
     private float gravity;
     private float jumpVelocity;
+
+    private bool canJumpAgain;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +37,11 @@ public class PlayerController : MonoBehaviour
         gravity = 0.0f;
         jumpVelocity = 0.0f;
 
-        fallingTime = 0.0f;
+        timer = 0.0f;
 
         fallVelocity = 0.0f;
+
+        canJumpAgain = false;
     }
 
     // Update is called once per frame
@@ -79,10 +84,25 @@ public class PlayerController : MonoBehaviour
             isPlayerWalking = false;
         }
 
+        timer += Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.Space) && isPlayerGrounded)
+        {
+            timer = 0.0f;
+
+            gravity = 1.0f;
+            jumpVelocity = 2.0f * apexHeight / apexTime * Time.deltaTime;
+
+            canJumpAgain = true;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Space) && !isPlayerGrounded && timer > coyoteTime &&
+            canJumpAgain != false)
         {
             gravity = 1.0f;
             jumpVelocity = 2.0f * apexHeight / apexTime * Time.deltaTime;
+
+            canJumpAgain = false;
         }
 
         if (rigidbody.velocity.y >= apexHeight && !isPlayerGrounded)

@@ -1698,6 +1698,7 @@ MonoBehaviour:
   apexTime: 2
   terminalSpeed: 2.5
   fallVelocity: 1
+  coyoteTime: 1
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
